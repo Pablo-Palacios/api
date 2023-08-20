@@ -70,6 +70,21 @@ def test_can_take_list_tasks():
     assert len(tasks) == n 
 
 
+def test_delete_task():
+    task = playload_task()
+    create_task_response = create_task(task)
+    data = create_task_response.json()
+    task_id = data ["task"]["task_id"]
+
+    delete_task_response = delete_task(task_id)
+    assert delete_task_response.status_code == 200 
+
+    get_task_delete_response = get_task(delete_task_response.json())
+    assert get_task_delete_response.status_code == 404
+
+
+
+
 
 
 
@@ -118,3 +133,6 @@ def update_task(playload):
 
 def list_tasks(user_id):
     return requests.get(HTTP + f"/list-tasks/{user_id}")
+
+def delete_task(task_id):
+    return requests.delete(HTTP + f"/delete-task/{task_id}")
